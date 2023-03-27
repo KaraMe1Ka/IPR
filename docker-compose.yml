@@ -1,0 +1,21 @@
+version: "2.2"
+services:  
+  postgresipr:
+    container_name: postgres_ipr
+    hostname: postgres_ipr
+    image: postgres:11
+    command: postgres -c 'max_connections=100'
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123456}
+      PGDATA: /data/postgres
+    volumes:
+      - ./data/postgres:/data/postgres
+      - ./init-database.sh:/docker-entrypoint-initdb.d/init-database.sh
+    ports:
+      - "5464:5454"
+    networks:
+      - ipr_network  
+networks:
+  ipr_network:
+    driver: bridge
